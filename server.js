@@ -11,7 +11,7 @@ app.use(cors())
 app.use(express.json())
 
 app.get("/", (req, res) => {
-  res.send("API funcionando 🚀")
+  res.send("API funcionando")
 })
 
 app.post("/api/diagnostico", generarDiagnostico)
@@ -19,5 +19,5 @@ app.post("/api/diagnostico", generarDiagnostico)
 const PORT = process.env.PORT || 3000
 
 app.listen(PORT, () => {
-  console.log(`Servidor en puerto ${PORT}`)
+  console.log(`Servidor en puerto ${PORT}`) 
 })
