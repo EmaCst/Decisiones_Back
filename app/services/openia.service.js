@@ -8,28 +8,47 @@ const client = new OpenAI({
 })
 
 export const evaluarConIA = async (data) => {
+  try {
 
-  const prompt = `
+    const prompt = `
 Actúa como consultor experto en implementación STEAM.
 
-Analiza el siguiente JSON y devuelve:
+Devuelve únicamente un objeto JSON válido con esta estructura EXACTA:
 
-- nivel_preparacion
-- riesgo
-- bloqueos
-- acciones_urgentes
+{
+  "nivel_preparacion": "",
+  "riesgo": "",
+  "bloqueos": [],
+  "acciones_urgentes": []
+}
 
-Responde en JSON.
+No incluyas explicaciones, texto adicional ni bloques markdown.
 
-JSON:
-${JSON.stringify(data)}
+Analiza el siguiente JSON:
+
+${JSON.stringify(data, null, 2)}
 `
 
-  const completion = await client.chat.completions.create({
-    model: "gpt-4.1",
-    temperature: 0.2,
-    messages: [{ role: "user", content: prompt }]
-  })
+    const completion = await client.chat.completions.create({
+      model: "gpt-4.1",
+      temperature: 0.2,
+      response_format: { type: "json_object" },
+      messages: [
+        {
+          role: "system",
+          content: "Responde únicamente con JSON válido sin texto adicional."
+        },
+        {
+          role: "user",
+          content: prompt
+        }
+      ]
+    })
 
-  return JSON.parse(completion.choices[0].message.content)
+    return JSON.parse(completion.choices[0].message.content)
+
+  } catch (error) {
+    console.error("Error en OpenAI:", error.message)
+    throw new Error("Fallo en generación con IA")
+  }
 }
