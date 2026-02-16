@@ -1,5 +1,7 @@
 import express from "express"
 import cors from "cors"
+app.use(cors())
+
 import diagnosticoRoutes from "./app/routes/diagnostico.routes.js";
 
 
