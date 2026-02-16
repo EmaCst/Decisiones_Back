@@ -4,7 +4,7 @@ import dotenv from "dotenv"
 
 dotenv.config()
 
-const app = express()   // ⬅️ PRIMERO SE CREA
+const app = express()   // ✅ PRIMERO se crea
 
 app.use(cors())
 app.use(express.json())
@@ -13,9 +13,9 @@ app.get("/", (req, res) => {
   res.send("API funcionando 🚀")
 })
 
-// tus rutas
-import diagnosticoRoutes from "./app/routes/diagnostico.routes.js"
-app.use("/api/diagnostico", diagnosticoRoutes)
+app.post("/api/diagnostico", (req, res) => {
+  res.json({ recibido: req.body })
+})
 
 const PORT = process.env.PORT || 3000
 
